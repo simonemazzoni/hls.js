@@ -1,7 +1,9 @@
 // Karma configuration
 // Generated on Tue Jul 18 2017 12:17:16 GMT-0700 (PDT)
 
-var path = require('path');
+const pkgJson = require('./package.json');
+const webpack = require('webpack');
+const path = require('path');
 
 module.exports = function(config) {
 	config.set({
@@ -10,10 +12,12 @@ module.exports = function(config) {
 
 		// frameworks to use
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-		frameworks: ['mocha'],
+		frameworks: ['mocha', 'sinon', 'should'],
 
 		// list of files / patterns to load in the browser
-		files: ['tests/tests.webpack.js'],
+		files: [
+      'tests/unit/**/*.js'
+    ],
 
 		// list of files to exclude
 		exclude: [],
@@ -21,7 +25,7 @@ module.exports = function(config) {
 		// preprocess matching files before serving them to the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
-			'tests/tests.webpack.js': ['webpack', 'sourcemap']
+		  '**/*.js': ['webpack', 'sourcemap']
 		},
 
 		// test results reporter to use
@@ -35,6 +39,7 @@ module.exports = function(config) {
 		},
 
 		webpack: {
+      mode: 'development',
 			devtool: 'inline-source-map',
 			module: {
 				rules: [
@@ -51,7 +56,15 @@ module.exports = function(config) {
 						]
 					}
 				]
-			}
+      },
+      plugins: [
+        new webpack.DefinePlugin({
+          __VERSION__: JSON.stringify(pkgJson.version),
+          __USE_SUBTITLES__: JSON.stringify(true),
+          __USE_ALT_AUDIO__: JSON.stringify(true),
+          __USE_EME_DRM__: JSON.stringify(true)
+        })
+      ]
 		},
 
 		// web server port
