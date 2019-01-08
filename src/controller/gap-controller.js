@@ -30,7 +30,7 @@ export default class GapController {
       // The playhead is now moving, but was previously stalled
       if (this.stallReported) {
         logger.warn(`playback not stuck anymore @${currentTime}, after ${Math.round(tnow - this.stalled)}ms`);
-        this.hls.trigger(Event.PLAYBACK_NOT_STUCK_ANYMORE,{
+        this.hls.trigger(Event.PLAYBACK_NOT_STUCK_ANYMORE, {
           currentTime,
           after: Math.round(tnow - this.stalled)
         });
